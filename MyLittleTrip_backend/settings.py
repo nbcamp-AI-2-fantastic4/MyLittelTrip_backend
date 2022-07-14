@@ -14,6 +14,8 @@ from pathlib import Path
 
 from .key_info import DJANGO_SECRET_KEY
 
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -146,3 +148,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser'
     ]
 }
+
+MEDIA_URL = '/media/' 
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
