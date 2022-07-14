@@ -1,6 +1,5 @@
 from django.db import models
-from datetime import datetime
-from place.models import Place as PlaceModel, Duration as DurationModel
+from place.models import Place as PlaceModel
 from user.models import User as UserModel
 
 class TripCourseType(models.Model):
