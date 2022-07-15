@@ -13,7 +13,7 @@ class PlaceAdmin(admin.ModelAdmin):
 
     fieldsets = (                               # 상세페이지에서 필드를 분류하는데 사용된다.
         ("info", {'fields': ('user', 'typename',
-         'name', 'x', 'y', 'rating', 'address')}),
+         '_id', 'name', 'x', 'y', 'rating', 'address')}),
         ('image', {'fields': ('image', )}),)
 
     # filter_horizontal = []
