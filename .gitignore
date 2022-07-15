@@ -2,3 +2,4 @@ MyLittleTrip_backend/key_info.py
 db.sqlite3
 *.pyc
 static/
+media/
