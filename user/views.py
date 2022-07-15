@@ -1,9 +1,9 @@
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.contrib.auth import authenticate
+
 
 from .serializers import UserSerializer
 
@@ -18,7 +18,7 @@ class UserInfoView(APIView):
     
     # 회원가입
     def post(self, request):
-        user_serializer = UserSerializer(data = request.data)
+        user_serializer = UserSerializer(data=request.data)
 
         if user_serializer.is_valid():
             user_serializer.save()
