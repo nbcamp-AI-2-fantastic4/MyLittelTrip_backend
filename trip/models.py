@@ -20,7 +20,7 @@ class Trip(models.Model):
         return f"{self.title} - {self.user.username}"
 
 class TripCourse(models.Model):
-    trip = models.ForeignKey(Trip, verbose_name="여행일정", on_delete=models.CASCADE)
+    trip = models.ForeignKey(Trip, verbose_name="여행일정", on_delete=models.CASCADE, related_name="tripcourse")
     tripcoursetype = models.ForeignKey(TripCourseType, verbose_name="여행 코스 유형", on_delete=models.CASCADE)
     place = models.ForeignKey(PlaceModel, verbose_name="여행 장소", on_delete=models.SET_NULL, null=True)
 
