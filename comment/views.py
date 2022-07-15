@@ -11,8 +11,12 @@ from comment.serializers import CommentSerializer, LikeSerializer
 
 class CommentView(APIView):
     # 댓글 조회 : /comment/<posttype_id>/<post_id>/
-    def get(self, request):
-        return Response({})
+    def get(self, request, posttype_id, post_id):
+        comments = Comment.objects.filter(posttype=posttype_id, post_id=post_id)
+
+        comment_serializer = CommentSerializer(comments, many=True).data
+
+        return Response(comment_serializer, status=status.HTTP_200_OK)
 
     # 댓글 작성 : /comment/
     def post(self, request):
