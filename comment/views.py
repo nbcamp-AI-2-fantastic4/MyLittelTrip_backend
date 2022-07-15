@@ -20,7 +20,20 @@ class CommentView(APIView):
 
     # 댓글 작성 : /comment/
     def post(self, request):
-        return Response({})
+        # print(request.data)
+        request_user = request.data.get("user", "")
+        request_posttype = request.data.get("posttype", "")
+
+        user = User.objects.get(id=request_user)
+        posttype = PostType.objects.get(id=request_posttype)
+
+        comment_serializer = CommentSerializer(data=request.data)
+
+        if comment_serializer.is_valid():
+            comment_serializer.save(user=user, posttype=posttype)
+            return Response({"message": "댓글 작성 성공"}, status=status.HTTP_200_OK)
+
+        return Response({"error": "댓글 작성 실패"}, status=status.HTTP_400_BAD_REQUEST)
 
     # 댓글 수정 : /comment/<comment_id>
     def put(self, request):
