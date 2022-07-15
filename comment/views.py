@@ -36,8 +36,18 @@ class CommentView(APIView):
         return Response({"error": "댓글 작성 실패"}, status=status.HTTP_400_BAD_REQUEST)
 
     # 댓글 수정 : /comment/<comment_id>
-    def put(self, request):
-        return Response({})
+    def put(self, request, comment_id):
+        print(request.data)
+        comment = Comment.objects.get(id=comment_id)
+
+        # 부분 업데이트 시 partial=True 사용
+        comment_serializer = CommentSerializer(comment, data=request.data, partial=True)
+
+        if comment_serializer.is_valid():
+            comment_serializer.save()
+            return Response({"message": "댓글 수정 성공"}, status=status.HTTP_200_OK)
+
+        return Response({"error": "댓글 수정 실패"}, status=status.HTTP_400_BAD_REQUEST)
 
     # 댓글 삭제 : /comment/<comment_id>
     def delete(self, request):
