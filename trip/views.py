@@ -36,16 +36,20 @@ class TripView(APIView):
         else:
             return Response({"error":"여행일정 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        print(trip)
-
         # 여행코스 저장
         for tripcourse in tripcourses:
             place_id = tripcourse.pop("place_id", "")
-            place = PlaceModel.objects.get(id=place_id)
-            
+            try: 
+                place = PlaceModel.objects.get(id=place_id)
+            except:
+                return Response({"error": "여행장소 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+
             tripcoursetype_id = tripcourse.pop("tripcoursetype_id", "")
-            tripcoursetype = TripCourseTypeModel.objects.get(id=tripcoursetype_id)
-            
+            try:
+                tripcoursetype = TripCourseTypeModel.objects.get(id=tripcoursetype_id)
+            except:
+                return Response({"error": "여행코스 유형 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+
             tripcourse_serializer = TripCourseSerializer(data=tripcourse)
             if tripcourse_serializer.is_valid():
                 tripcourse_serializer.save(place=place, 
@@ -53,12 +57,9 @@ class TripView(APIView):
                                            trip=trip)
             else:
                 print(tripcourse_serializer.errors)
-                return Response({"error":"여행코스 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": "여행코스 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({})
-        # return Response(TripCourseSerializer(tripcourses, many=True).data)
-
-        # return Response(request.data, status=status.HTTP_200_OK)
+        return Response({"message": "저장 완료"}, status=status.HTTP_200_OK)
 
 # 여행일정 상세 기능
 class TripDetailView(APIView):
