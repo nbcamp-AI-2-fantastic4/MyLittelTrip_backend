@@ -62,3 +62,56 @@ class ReviewDetailView(APIView):
 
         review_obj_serializer = ReviewDetailSerializer(review_obj).data
         return Response(review_obj_serializer, status=status.HTTP_200_OK)
+
+    def put(self, request, review_id):
+        
+        # 리뷰 모델 수정
+        try:
+            review = Review.objects.get(id=review_id)
+        except:
+            return Response({"error": "존재하지 않는 게시글 입니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        review_serializer = ReviewSerializer(review, data=request.data, partial=True)
+
+        if review_serializer.is_valid():
+            review_serializer.save()
+        else:
+            return Response(review_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # 이미지 모델 수정 
+        # if 'image' in request.data:
+        #     image = request.data.pop('image')
+        #     order = request.data['order']
+
+        #     review_images = ReviewImage.objects.filter(review=review_id)
+        #     try:
+        #         review_image = review_images.get(order=order)
+        #     except:
+        #             return Response({"error": "이미지 모델이 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+            
+        #     reviewimage_dict = {"image":image}
+        #     review_image_serializer = ReviewImageSerializer(review_image, data=reviewimage_dict, partial=True)
+        #     if review_image_serializer.is_valid():
+        #         review_image_serializer.save()
+        #     else:
+        #         return Response(review_image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            # for index, image in enumerate(images):
+            #     reviewimage_dict = {"image":image}
+            #     review_image_serializer = ReviewImageSerializer(review_image, data=reviewimage_dict, partial=True)
+
+            #     if review_image_serializer.is_valid():
+            #         review_image_serializer.save()
+            #     else:
+            #         return Response(review_image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+        return Response({"message":"수정 완료!"})
+
+    def delete(self, request, review_id):
+        try:
+            review = Review.objects.get(id=review_id)
+        except:
+            return Response({"error": "존재하지 않는 게시글 입니다."}, status=status.HTTP_400_BAD_REQUEST)
+        review.delete()
+        return Response({"message":"삭제 완료!"})
