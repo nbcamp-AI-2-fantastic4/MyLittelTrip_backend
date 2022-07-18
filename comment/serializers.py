@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from comment.models import PostType, Comment, Like
+from comment.models import Comment
 
 class CommentSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
@@ -27,17 +27,3 @@ class CommentSerializer(serializers.ModelSerializer):
     # def create(self, validated_data) : 
     #     print(validated_data)
     #     return Comment()
-
-class LikeSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-    posttype = serializers.SerializerMethodField()
-
-    def get_user(self, obj):
-        return obj.user.username
-
-    def get_posttype(self, obj):
-        return obj.posttype.typename
-
-    class Meta:
-        model = Like
-        fields = ["user", "posttype", "post_id"]

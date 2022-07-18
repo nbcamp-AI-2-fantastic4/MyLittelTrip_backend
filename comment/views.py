@@ -6,8 +6,8 @@ from rest_framework.response import Response
 
 from user.models import User
 
-from comment.models import PostType, Comment, Like
-from comment.serializers import CommentSerializer, LikeSerializer
+from comment.models import PostType, Comment
+from comment.serializers import CommentSerializer
 
 class CommentView(APIView):
     # 댓글 조회 : /comment/<posttype_id>/<post_id>/
@@ -55,12 +55,3 @@ class CommentView(APIView):
         comment.delete()
         return Response({"message": "댓글 삭제 성공"}, status=status.HTTP_200_OK)
         # return Response({"error": "댓글 삭제 실패"}, status=status.HTTP_400_BAD_REQUEST)
-
-class LikeView(APIView):
-    # 좋아요 등록 : /like/
-    def post(self, request):
-        return Response({})
-
-    # 좋아요 취소 : /like/
-    def delete(self, request):
-        return Response({})
