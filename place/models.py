@@ -23,7 +23,7 @@ class Place(models.Model):
     y = models.CharField("y좌표(위도)", max_length=50)
 
     image = models.ImageField('장소 이미지', upload_to="static/images/place/%Y%m%d", null=True)
-    rating = models.FloatField("평점", validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], defualt=0.0)
+    rating = models.FloatField("평점", validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], default=0.0)
     description = models.TextField("설명", null=True)
 
     def __str__(self):
