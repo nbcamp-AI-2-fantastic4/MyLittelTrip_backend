@@ -10,7 +10,7 @@ class PlaceAdmin(admin.ModelAdmin):
 
     fieldsets = (                              
         ("info", {'fields': ('user', 
-         '_id', 'name', 'x', 'y', 'rating', 'address')}),
+         '_id', 'placetype','name', 'x', 'y', 'rating', 'address')}),
         ('image', {'fields': ('image', )}),)
 
     def image_preview(self, obj):
