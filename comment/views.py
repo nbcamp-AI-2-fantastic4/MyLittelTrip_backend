@@ -20,7 +20,6 @@ class CommentView(APIView):
 
     # 댓글 작성 : /comment/
     def post(self, request):
-        # print(request.data)
         request_user = request.data.get("user", "")
         request_posttype = request.data.get("posttype", "")
 
@@ -37,7 +36,6 @@ class CommentView(APIView):
 
     # 댓글 수정 : /comment/<comment_id>
     def put(self, request, comment_id):
-        print(request.data)
         comment = Comment.objects.get(id=comment_id)
 
         # 부분 업데이트 시 partial=True 사용
