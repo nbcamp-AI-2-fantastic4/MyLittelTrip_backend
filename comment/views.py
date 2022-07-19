@@ -51,7 +51,10 @@ class CommentView(APIView):
 
     # 댓글 삭제 : /comment/<comment_id>
     def delete(self, request, comment_id):
-        comment = Comment.objects.get(id=comment_id)
-        comment.delete()
-        return Response({"message": "댓글 삭제 성공"}, status=status.HTTP_200_OK)
-        # return Response({"error": "댓글 삭제 실패"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            comment = Comment.objects.get(id=comment_id)
+            comment.delete()
+            return Response({"message": "댓글 삭제 성공"}, status=status.HTTP_200_OK)
+        
+        except:
+            return Response({"error": "댓글 삭제 실패"}, status=status.HTTP_400_BAD_REQUEST)
