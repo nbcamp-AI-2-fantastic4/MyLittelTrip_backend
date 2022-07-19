@@ -52,6 +52,8 @@ class ReviewView(APIView):
 
 # 리뷰 상세 기능
 class ReviewDetailView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = [JWTAuthentication]
 
     # 리뷰 상세보기 : 로그인 안된 회원도 조회는 가능하게
     def get(self, request, review_id):
@@ -63,6 +65,7 @@ class ReviewDetailView(APIView):
         review_obj_serializer = ReviewDetailSerializer(review_obj).data
         return Response(review_obj_serializer, status=status.HTTP_200_OK)
 
+    # 리뷰 수정하기
     def put(self, request, review_id):
         
         # 리뷰 모델 수정
@@ -79,35 +82,25 @@ class ReviewDetailView(APIView):
             return Response(review_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         # 이미지 모델 수정 
-        # if 'image' in request.data:
-        #     image = request.data.pop('image')
-        #     order = request.data['order']
+        if 'image' in request.data:
+            reviewimages = request.data.pop('image')
 
-        #     review_images = ReviewImage.objects.filter(review=review_id)
-        #     try:
-        #         review_image = review_images.get(order=order)
-        #     except:
-        #             return Response({"error": "이미지 모델이 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
-            
-        #     reviewimage_dict = {"image":image}
-        #     review_image_serializer = ReviewImageSerializer(review_image, data=reviewimage_dict, partial=True)
-        #     if review_image_serializer.is_valid():
-        #         review_image_serializer.save()
-        #     else:
-        #         return Response(review_image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            images_obj = ReviewImage.objects.filter(review=review_id)
 
-            # for index, image in enumerate(images):
-            #     reviewimage_dict = {"image":image}
-            #     review_image_serializer = ReviewImageSerializer(review_image, data=reviewimage_dict, partial=True)
+            for index, image in enumerate(reviewimages):
+                reviewimage_dict = {"image" : image}
+                image_obj = images_obj.get(order=index)
 
-            #     if review_image_serializer.is_valid():
-            #         review_image_serializer.save()
-            #     else:
-            #         return Response(review_image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                review_image_serializer = ReviewImageSerializer(image_obj, data=reviewimage_dict, partial=True)
 
+                if review_image_serializer.is_valid():
+                    review_image_serializer.save()
+                else:
+                    return Response(review_image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"message":"수정 완료!"})
 
+    # 리뷰 삭제
     def delete(self, request, review_id):
         try:
             review = Review.objects.get(id=review_id)
