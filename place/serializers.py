@@ -5,30 +5,23 @@ from place.models import Place, PlaceType
 from user.models import User
 from user.serializers import UserSerializer
 
+
+
 class PlaceTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceType
         fields = ['id', 'typename']
 
 
-
-
-
 class PlaceSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField(read_only=True)
+    username = serializers.SerializerMethodField(read_only=True)
     placetype = serializers.SerializerMethodField(read_only=True)
-     
-    def get_user(self, obj):
-         return obj.user.username
 
+    def get_username(self, obj):
+        return obj.user.username
 
-    def get_placetype(self,obj):
+    def get_placetype(self, obj):
         return obj.placetype.typename
-
-    # def create(self, validated_data):
-    #     place = Place(**validated_data)
-    #     place.save()
-    #     return place
 
     class Meta:
         model = Place
@@ -49,24 +42,19 @@ class PlaceSerializer(serializers.ModelSerializer):
 
 class PlaceAddSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    placetype = PlaceTypeSerializer()
+    placetype = serializers.SerializerMethodField()
 
-    def validate(self, data):
-        print(data)
-        return data
 
-    def create(self, validated_data):
-        place = Place(**validated_data)
-        # place.save()
-        return place
 
     def get_placetype(self, obj):
-        placetype_obj = obj.reviewimage_set.all()
-        placetype_data = {
-            'placetype_id': placetype_obj.placetype_id,
-            'placetype_typename': placetype_obj.placetype_typename,
-        }
-        return placetype_data
+        return obj.placetype.typename
+
+
+    def create(self, validated_data):
+        print(validated_data)
+        place = Place(**validated_data)
+        place.save()
+        return place
 
     class Meta:
         model = Place
@@ -79,5 +67,6 @@ class PlaceAddSerializer(serializers.ModelSerializer):
             'x',
             'y',
             'image',
-            'description'
+            'description',
+            '_id'
         ]

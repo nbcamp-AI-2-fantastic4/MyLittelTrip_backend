@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Duration, Place, PlaceType
-from django.utils.html import mark_safe
+from django.utils.html import mark_safe  # type: ignore
 
 
 class PlaceAdmin(admin.ModelAdmin):
