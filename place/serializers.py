@@ -14,10 +14,10 @@ class PlaceTypeSerializer(serializers.ModelSerializer):
 
 
 class PlaceSerializer(serializers.ModelSerializer):
-    username = serializers.SerializerMethodField(read_only=True)
+    user = serializers.SerializerMethodField(read_only=True)
     placetype = serializers.SerializerMethodField(read_only=True)
 
-    def get_username(self, obj):
+    def get_user(self, obj):
         return obj.user.username
 
     def get_placetype(self, obj):
@@ -68,7 +68,8 @@ class PlaceAddSerializer(serializers.ModelSerializer):
             'y',
             'image',
             'description',
-            '_id'
+            '_id',
+            'word'
         ]
 
 
