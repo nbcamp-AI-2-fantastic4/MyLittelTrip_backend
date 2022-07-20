@@ -14,7 +14,6 @@ class PlaceViewAll(APIView):
     # 장소 모두 조회
     def get(self, request):
         allplaces = Place.objects.all()
-        print(allplaces)
         return Response(PlaceSerializer(allplaces, many=True).data, status=status.HTTP_200_OK)
 
     # 장소 등록
