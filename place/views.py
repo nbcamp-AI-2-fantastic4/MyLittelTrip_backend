@@ -6,7 +6,6 @@ from rest_framework import status
 from place.serializers import PlaceSerializer, PlaceAddSerializer, PlaceUpdateSerializer
 from .models import Place, PlaceType
 from user.models import User
-import json
 # Create your views here.
 
 
@@ -21,11 +20,7 @@ class PlaceViewAll(APIView):
     # 장소 등록
 
     def post(self, request):
-        # request.data['user']
-        # data = json.loads(request.body)
-        # print(data)
-        print(request.data)
-        
+
         request.data['rating'] = 0
         image = request.FILES.get("image", "")
         placetype_typename = request.data.pop('placetype', '')[0]
@@ -43,10 +38,8 @@ class PlaceViewAll(APIView):
     # 장소 수정
 
     def put(self, request, place_id):
-            # print(place_id)
+
             place = Place.objects.get(id=place_id)
-            
-            # print(place,request.data)
 
             place_serializer = PlaceUpdateSerializer(place,data=request.data,partial=True)
 
@@ -56,4 +49,12 @@ class PlaceViewAll(APIView):
         
             return Response(place_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+    #장소 삭제
+
+    def delete(self, request, place_id):
+        place = Place.objects.get(id=place_id)
+        place.delete()
+        return Response({"msg":"삭제완료"})        
+                
            
