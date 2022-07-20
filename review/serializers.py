@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.db.models.query_utils import Q
 
 from .models import Review, ReviewImage
+from comment.models import Like
+
 from trip.serializers import TripSerializer
 
 
@@ -38,8 +40,8 @@ class ReviewSerializer(serializers.ModelSerializer):
             Q(posttype_id = 1) & 
             Q(post_id = obj.id)
         )
-        likes_objs = obj.user.like_set.filter(query)
- 
+        likes_objs = Like.objects.filter(query)
+        
         likes_count = likes_objs.count()
         return likes_count
 
@@ -79,7 +81,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
             Q(posttype_id = 1) & 
             Q(post_id = obj.id)
         )
-        likes_objs = obj.user.like_set.filter(query)
+        likes_objs = Like.objects.filter(query)
  
         likes_count = likes_objs.count()
         return likes_count
