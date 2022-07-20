@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from place.serializers import PlaceSerializer, PlaceAddSerializer
+from place.serializers import PlaceSerializer, PlaceAddSerializer, PlaceUpdateSerializer
 from .models import Place, PlaceType
 from user.models import User
 import json
@@ -40,3 +40,20 @@ class PlaceViewAll(APIView):
             return Response(placeadd_serializer.data, status=status.HTTP_200_OK)
         return Response(placeadd_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # 장소 수정
+
+    def put(self, request, place_id):
+            # print(place_id)
+            place = Place.objects.get(id=place_id)
+            
+            # print(place,request.data)
+
+            place_serializer = PlaceUpdateSerializer(place,data=request.data,partial=True)
+
+            if place_serializer.is_valid():
+                place_serializer.save()
+                return Response({"message": "정상"}, status=status.HTTP_200_OK)
+        
+            return Response(place_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+           

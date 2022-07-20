@@ -70,3 +70,36 @@ class PlaceAddSerializer(serializers.ModelSerializer):
             'description',
             '_id'
         ]
+
+
+class PlaceUpdateSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    placetype = serializers.SerializerMethodField()
+
+
+
+    def get_placetype(self, obj):
+        return obj.placetype.typename
+
+
+    # def create(self, validated_data):
+    #     print(validated_data)
+    #     place = Place(**validated_data)
+    #     # place.save()
+    #     return place
+
+    class Meta:
+        model = Place
+        fields = [
+            'id',
+            'user',
+            'placetype',
+            'name',
+            'address',
+            'x',
+            'y',
+            'image',
+            'description',
+            '_id'
+        ]
+
