@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Duration, Place, PlaceType
-from django.utils.html import mark_safe
+from django.utils.html import mark_safe  # type: ignore
 
 
 class PlaceAdmin(admin.ModelAdmin):
@@ -10,7 +10,7 @@ class PlaceAdmin(admin.ModelAdmin):
 
     fieldsets = (                              
         ("info", {'fields': ('user', 
-         '_id', 'name', 'x', 'y', 'rating', 'address')}),
+         '_id', 'placetype','name', 'x', 'y', 'rating', 'address')}),
         ('image', {'fields': ('image', )}),)
 
     def image_preview(self, obj):
