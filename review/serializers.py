@@ -2,16 +2,23 @@ from rest_framework import serializers
 from django.db.models.query_utils import Q
 
 from .models import Review, ReviewImage
+from comment.models import Like
 
+from trip.serializers import TripSerializer
+
+
+# 이미지 모델 시리얼라이저
 class ReviewImageSerializer(serializers.ModelSerializer):
+    order = serializers.ReadOnlyField()
     class Meta:
         model = ReviewImage
-        fields = ['id', 'order', 'image']
+        fields = ['review_id', 'order', 'image']
 
 
+# 리뷰 조회, 작성 시리얼라이저
 class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    images = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField(read_only=True)
     # images = ReviewImageSerializer(source='reviewimage_set')
     likes = serializers.SerializerMethodField(read_only=True)
 
@@ -33,19 +40,24 @@ class ReviewSerializer(serializers.ModelSerializer):
             Q(posttype_id = 1) & 
             Q(post_id = obj.id)
         )
-        likes_objs = obj.user.like_set.filter(query)
- 
+        likes_objs = Like.objects.filter(query)
+        
         likes_count = likes_objs.count()
         return likes_count
 
     class Meta:
         model = Review
-        fields = ['user', 'title', 'content', 'created_at', 'images', 'likes']
+        fields = ['user', 'title', 'content', 
+                  'created_at', 'images', 'likes']
 
 
+# 리뷰 상세조회 시리얼라이저
 class ReviewDetailSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
+    trip = TripSerializer()
+    likes = serializers.SerializerMethodField(read_only=True)
+
 
     def get_user(self, obj):
         return obj.user.username
@@ -64,6 +76,17 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
         
         return image_list
 
+    def get_likes(self, obj):
+        query = (
+            Q(posttype_id = 1) & 
+            Q(post_id = obj.id)
+        )
+        likes_objs = Like.objects.filter(query)
+ 
+        likes_count = likes_objs.count()
+        return likes_count
+
     class Meta:
         model = Review
-        fields = ['user', 'created_at', 'trip', 'title', 'content', 'images']
+        fields = ['user', 'created_at', 'trip', 'title', 
+                  'content', 'images', 'likes']
