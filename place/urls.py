@@ -6,4 +6,6 @@ from . import views
 # place/
 urlpatterns = [
     path('', views.PlaceViewAll.as_view()),
+    path('<place_id>/', views.PlaceViewAll.as_view()),
+
 ]
