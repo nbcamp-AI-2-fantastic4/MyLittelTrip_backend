@@ -18,9 +18,9 @@ class ReviewImageSerializer(serializers.ModelSerializer):
 # 리뷰 조회, 작성 시리얼라이저
 class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    images = serializers.SerializerMethodField(read_only=True)
+    images = serializers.SerializerMethodField()
     # images = ReviewImageSerializer(source='reviewimage_set')
-    likes = serializers.SerializerMethodField(read_only=True)
+    likes = serializers.SerializerMethodField()
 
     def get_user(self, obj):
         return obj.user.username
@@ -56,7 +56,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     trip = TripSerializer()
-    likes = serializers.SerializerMethodField(read_only=True)
+    likes = serializers.SerializerMethodField()
 
 
     def get_user(self, obj):
