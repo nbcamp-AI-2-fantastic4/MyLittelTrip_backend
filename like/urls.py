@@ -3,5 +3,5 @@ from like import views
 
 urlpatterns = [
     # like/
-    path('', views.LikeView.as_view()),
+    path('', views.LikeView.as_view(), name="like_view"),
 ]
