@@ -12,7 +12,7 @@ from user.models import User
 
 # 리뷰 기능
 class ReviewView(APIView):
-    permission_classes = [permissions.AllowAny]
+    # permission_classes = [permissions.AllowAny]
     authentication_classes = [JWTAuthentication]
 
     # 리뷰 리스트 조회 : 로그인 안된 회원도 조회는 가능하게
@@ -26,6 +26,9 @@ class ReviewView(APIView):
         
     # 리뷰 작성하기 : 인증된 회원만
     def post(self, request):
+        if not request.user.is_authenticated:
+            return Response({"message": "로그인해주세요"}, status=status.HTTP_401_UNAUTHORIZED)
+
         trip_id = request.data.pop('trip_id')[0]
         user_id = request.data.pop('user_id')[0]
         reviewimages = request.data.pop('image')
@@ -52,7 +55,7 @@ class ReviewView(APIView):
 
 # 리뷰 상세 기능
 class ReviewDetailView(APIView):
-    permission_classes = [permissions.AllowAny]
+    # permission_classes = [permissions.AllowAny]
     authentication_classes = [JWTAuthentication]
 
     # 리뷰 상세보기 : 로그인 안된 회원도 조회는 가능하게
@@ -67,6 +70,8 @@ class ReviewDetailView(APIView):
 
     # 리뷰 수정하기
     def put(self, request, review_id):
+        if not request.user.is_authenticated:
+            return Response({"message": "로그인해주세요"}, status=status.HTTP_401_UNAUTHORIZED)
         
         # 리뷰 모델 수정
         try:
@@ -102,6 +107,9 @@ class ReviewDetailView(APIView):
 
     # 리뷰 삭제
     def delete(self, request, review_id):
+        if not request.user.is_authenticated:
+            return Response({"message": "로그인해주세요"}, status=status.HTTP_401_UNAUTHORIZED)
+            
         try:
             review = Review.objects.get(id=review_id)
         except:
