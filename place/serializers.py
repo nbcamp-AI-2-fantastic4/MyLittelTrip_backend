@@ -5,7 +5,11 @@ from place.models import Place, PlaceType
 from user.models import User
 from user.serializers import UserSerializer
 
+class PlaceDetailSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Place
+        fields = ['_id','user','word','placetype','name','address','x','y','image','rating','description']
 
 class PlaceTypeSerializer(serializers.ModelSerializer):
     class Meta:
