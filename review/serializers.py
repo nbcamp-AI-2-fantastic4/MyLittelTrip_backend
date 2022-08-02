@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from django.db.models.query_utils import Q
 
+
 from .models import Review, ReviewImage
 from comment.models import Like
+from trip.models import Trip
 
 from trip.serializers import TripSerializer
 
@@ -21,6 +23,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     # images = ReviewImageSerializer(source='reviewimage_set')
     likes = serializers.SerializerMethodField()
+
 
     def get_user(self, obj):
         return obj.user.username
@@ -47,8 +50,15 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['user', 'title', 'content', 
+        fields = ['user', 'title', 'content',
                   'created_at', 'images', 'likes']
+
+
+# 리뷰 작성 페이지 user trip 조회 시리얼라이저
+class ReviewUserTripSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Trip
+        fields = ['id', 'title']
 
 
 # 리뷰 상세조회 시리얼라이저
