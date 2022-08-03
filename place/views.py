@@ -3,22 +3,31 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from place.serializers import PlaceSerializer, PlaceAddSerializer, PlaceUpdateSerializer
+from place.serializers import PlaceSerializer, PlaceAddSerializer, PlaceUpdateSerializer,PlaceDetailSerializer
 from .models import Place, PlaceType
 from user.models import User
+from rest_framework_simplejwt.authentication import JWTAuthentication
 # Create your views here.
+# 장소 상세 조회
+class PlaceViewDetail(APIView):
+    def get(self,request,place_id):
+        detailplaces = Place.objects.get(id=place_id)
+        return Response(PlaceDetailSerializer(detailplaces).data, status=status.HTTP_200_OK)
 
 
 class PlaceViewAll(APIView):
-
+    authentication_classes = [JWTAuthentication] #JWT 인증
     # 장소 모두 조회
     def get(self, request):
         allplaces = Place.objects.all()
         return Response(PlaceSerializer(allplaces, many=True).data, status=status.HTTP_200_OK)
 
-    # 장소 등록
+    
 
+    # 장소 등록
     def post(self, request):
+        if not request.user.is_authenticated:
+            return Response({"message": "로그인해주세요"}, status=status.HTTP_401_UNAUTHORIZED)
 
         request.data['rating'] = 0
         image = request.FILES.get("image", "")

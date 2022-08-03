@@ -6,11 +6,11 @@ from django.utils.html import mark_safe  # type: ignore
 class PlaceAdmin(admin.ModelAdmin):
     list_display = ('id', 'image_preview', 'user', 'name')
     list_display_links = ('id', 'user', 'name')
-    search_fields = ('word',)   
+    search_fields = ('word',)
 
-    fieldsets = (                              
-        ("info", {'fields': ('user', 
-         '_id', 'placetype','name', 'x', 'y', 'rating', 'address')}),
+    fieldsets = (
+        ("info", {'fields': ('user',
+         '_id', 'placetype', 'name', 'x', 'y', 'rating', 'address')}),
         ('image', {'fields': ('image', )}),)
 
     def image_preview(self, obj):
