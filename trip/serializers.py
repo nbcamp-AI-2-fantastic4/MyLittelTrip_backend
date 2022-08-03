@@ -18,9 +18,9 @@ class TripCourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TripCourseModel
-        fields = ["id", "trip", "place", "start_at", "end_at", "order", "tripcoursetype" ]
+        fields = ["id", "trip", "place", "start_at", "end_at", "order", "tripcoursetype", "doing" ]
 
-        read_only_fields = ("trip", )
+        read_only_fields = ("trip", "place")
 
 # 여행일정 상세 조회를 위한 Serializer
 class TripDetailSerializer(serializers.ModelSerializer):

@@ -32,16 +32,21 @@ def duration_minute(start_index, start_word, goal_index, goal_word, places_info)
         else:
             duration_time = 1
 
-        kinds = ['', '식당', '카페', '숙소']
-        
-        start_typename = kinds[start_index] if kinds[start_index] != '' else '여행장소'
-        start_placetype = PlaceTypeModel.objects.get(typename=start_typename)
-        start_place = PlaceModel.objects.filter(word=start_word, placetype=start_placetype)
-        print(start_word, start_placetype, start_place)
 
-        goal_typename = kinds[goal_index] if kinds[goal_index] != '' else '여행장소'
-        goal_placetype = PlaceTypeModel.objects.get(typename=goal_typename)
-        goal_place = PlaceModel.objects.filter(word=goal_word, placetype=goal_placetype)
+        kinds = ['', '식당', '카페', '숙소']
+
+        index = start_index
+        word = start_word
+        typename = kinds[index] if kinds[index] != '' else '여행장소'
+        placetype = PlaceTypeModel.objects.get(typename=typename)
+        start_place = PlaceModel.objects.filter(word=word, placetype=placetype).first()
+
+
+        index = goal_index
+        word = goal_word
+        typename = kinds[index] if kinds[index] != '' else '여행장소'
+        placetype = PlaceTypeModel.objects.get(typename=typename)
+        goal_place = PlaceModel.objects.filter(word=word, placetype=placetype).first()
 
         duration_temp = {
             'start_id': start['id'],
@@ -109,7 +114,6 @@ def parsing(index, word, places_info):
     if place_info not in places_info:
         places_info.append(place_info)
 
-    print(place_info)
     return place_info
 
 

@@ -37,24 +37,23 @@ class TripView(APIView):
             return Response({"error":"여행일정 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         # 여행코스 저장
-        for tripcourse in tripcourses:
-            place_id = tripcourse.pop("place_id", "")
-            try: 
-                place = PlaceModel.objects.get(id=place_id)
-            except:
-                return Response({"error": "여행장소 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        for i, tripcourse in enumerate(tripcourses):
+            # place_id = tripcourse.pop("place_id", "")
+            # try: 
+            #     place = PlaceModel.objects.get(id=place_id)
+            # except:
+            #     return Response({"error": "여행장소 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-            tripcoursetype_id = tripcourse.pop("tripcoursetype_id", "")
+            tripcoursetype = tripcourse.pop("tripcoursetype", "")
             try:
-                tripcoursetype = TripCourseTypeModel.objects.get(id=tripcoursetype_id)
+                tripcoursetype = TripCourseTypeModel.objects.get(typename=tripcoursetype)
             except:
-                return Response({"error": "여행코스 유형 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
-
+                tripcoursetype = None
+       
+            tripcourse['order'] = i+1
             tripcourse_serializer = TripCourseSerializer(data=tripcourse)
             if tripcourse_serializer.is_valid():
-                tripcourse_serializer.save(place=place, 
-                                           tripcoursetype=tripcoursetype, 
-                                           trip=trip)
+                tripcourse_serializer.save(trip=trip, tripcoursetype=tripcoursetype)
             else:
                 print(tripcourse_serializer.errors)
                 return Response({"error": "여행코스 정보가 옳바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
