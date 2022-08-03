@@ -6,6 +6,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 from .serializers import UserSerializer
+import json
 
 # 유저 정보 기능
 class UserInfoView(APIView):
@@ -18,7 +19,8 @@ class UserInfoView(APIView):
     
     # 회원가입
     def post(self, request):
-        user_serializer = UserSerializer(data=request.data)
+        data = json.loads(request.body)
+        user_serializer = UserSerializer(data=data)
 
         if user_serializer.is_valid():
             user_serializer.save()

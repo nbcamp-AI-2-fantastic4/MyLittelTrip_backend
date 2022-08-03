@@ -11,6 +11,7 @@ urlpatterns = [
     path('review/', include('review.urls')),
     path('user/', include("user.urls")), 
     path('trip/', include("trip.urls")), 
+    path('recommend/', include("recommend.urls")), 
 ]
 
 if settings.DEBUG:

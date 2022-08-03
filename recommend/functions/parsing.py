@@ -4,7 +4,9 @@ from user.models import User as UserModel
 from place.models import (
     Place as PlaceModel,
     PlaceType as PlaceTypeModel,
+    Duration as DurationModel
 )
+from place.serializers import PlaceAddSerializer
 
 base_parsing_url = 'https://map.naver.com/v5/api/search?caller=pcweb&query='
 base_route_url = 'https://map.naver.com/v5/api/transit/directions/point-to-point?start={}, {},placeid= {},name= {}&goal= {}, {},placeid= {},name={}'
@@ -19,8 +21,9 @@ def duration_minute(start_index, start_word, goal_index, goal_word, places_info)
     start = parsing(start_index, start_word, places_info)
     goal = parsing(goal_index, goal_word, places_info)
 
-    duration = db.durations.find_one({'start_id': start['id'], 'goal_id': goal['id']}, {'_id':False})
-    if duration is None:
+    duration = DurationModel.objects.filter(start_id=start['id'], end_id=goal['id'])
+    
+    if len(duration) == 0:
         route_url = base_route_url.format(start['x'], start['y'], start['id'], start['name'],
                                           goal['x'], goal['y'], goal['id'], goal['name'])
         data = requests.get(route_url, headers=headers).json()
@@ -28,17 +31,27 @@ def duration_minute(start_index, start_word, goal_index, goal_word, places_info)
             duration_time = data['paths'][0]['duration']
         else:
             duration_time = 1
-        duration_info = {
+
+        kinds = ['', '식당', '카페', '숙소']
+        
+        start_typename = kinds[start_index] if kinds[start_index] != '' else '여행장소'
+        start_placetype = PlaceTypeModel.objects.get(typename=start_typename)
+        start_place = PlaceModel.objects.filter(word=start_word, placetype=start_placetype)
+        print(start_word, start_placetype, start_place)
+
+        goal_typename = kinds[goal_index] if kinds[goal_index] != '' else '여행장소'
+        goal_placetype = PlaceTypeModel.objects.get(typename=goal_typename)
+        goal_place = PlaceModel.objects.filter(word=goal_word, placetype=goal_placetype)
+
+        duration_temp = {
             'start_id': start['id'],
-            'start_name': start['name'],
-            'goal_id': goal['id'],
-            'goal_name': goal['name'],
+            'end_id': goal['id'],
             'duration': duration_time
         }
-        db.durations.insert_one(duration_info)
+
+        DurationModel.objects.create(start_place=start_place, end_place=goal_place, **duration_temp)
     else:
-        duration_info = duration
-        duration_time = duration_info['duration']
+        duration_time = duration.first().duration
 
     return duration_time
 
@@ -52,7 +65,6 @@ def duration_minute(start_index, start_word, goal_index, goal_word, places_info)
 def parsing(index, word, places_info):
     kinds = ['', '식당', '카페', '숙소']
     typename = kinds[index] if kinds[index] != '' else '여행장소'
-
 
     # DB에서 입력 정보에 해당하는 데이터 검색
     placetype = PlaceTypeModel.objects.get(typename=typename)
@@ -85,10 +97,19 @@ def parsing(index, word, places_info):
         }
 
         user = UserModel.objects.get(username="admin")
+        image = None
 
+        placeadd_serializer = PlaceAddSerializer(data=place_info)
+
+        if placeadd_serializer.is_valid():
+            placeadd_serializer.save(user=user,placetype=placetype,image=image)
+
+        place_info['id'] = place_info.pop('_id')
 
     if place_info not in places_info:
         places_info.append(place_info)
 
+    print(place_info)
     return place_info
+
 
