@@ -4,5 +4,5 @@ from . import views
 # recommend/
 urlpatterns = [
     path('', views.ParsingView.as_view()),
-    path('duration/', views.DurationView.as_view()),
+    path('schedule/', views.ScheduleView.as_view()),
 ]

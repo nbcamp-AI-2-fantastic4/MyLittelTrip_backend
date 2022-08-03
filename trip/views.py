@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+import json
+
 from place.models import Place as PlaceModel
 from .models import (
     Trip as TripModel,
@@ -28,9 +30,10 @@ class TripView(APIView):
     # 여행일정 저장
     def post(self, request):
         # 여행일정 저장
-        tripcourses = request.data.pop("tripcourse", "")
+        data = json.loads(request.body)
+        tripcourses = data.pop("tripcourse", "")
 
-        trip_serializer = TripSerializer(data=request.data)
+        trip_serializer = TripSerializer(data=data)
         if trip_serializer.is_valid():
             trip = trip_serializer.save(user=request.user)
         else:
