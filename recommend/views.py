@@ -37,7 +37,6 @@ class ScheduleView(APIView):
         dists, route = recommend.dists_and_route(places, places_info)
         total_route, places_info = schedule.schedule(places, places_info, start_day, start_time, dists, route, add_place_index)
 
-
         result = {
             "result" : total_route,
             "places_info": places_info
