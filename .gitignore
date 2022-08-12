@@ -3,3 +3,8 @@ db.sqlite3
 *.pyc
 static/
 media/
+venv
+.env.dev
+.env.postgres.dev
+.env.prod
+.env.postgres.prod

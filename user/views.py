@@ -15,8 +15,10 @@ class UserInfoView(APIView):
     
     # 유저 정보 조회
     def get(self, request):
-        return Response(UserSerializer(request.user).data, status=status.HTTP_200_OK)
-    
+        if request.user is not None:
+            return Response(UserSerializer(request.user).data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
     # 회원가입
     def post(self, request):
         data = json.loads(request.body)

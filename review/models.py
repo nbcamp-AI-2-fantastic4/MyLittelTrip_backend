@@ -16,6 +16,7 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.title} - {self.user.username}"
 
+
 # 리뷰 이미지 모델
 class ReviewImage(models.Model):
     review = models.ForeignKey(Review, verbose_name='리뷰', on_delete=models.CASCADE)

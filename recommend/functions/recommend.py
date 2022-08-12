@@ -1,5 +1,5 @@
-from functions import parsing
-from functions import tsp
+from . import parsing
+from . import tsp
 
 
 # places : 출발지 + 여행 장소들을 원소로 하는 리스트 / places[0] : 출발지

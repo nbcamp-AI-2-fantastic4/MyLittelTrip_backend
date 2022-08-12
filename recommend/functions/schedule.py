@@ -1,9 +1,5 @@
 from datetime import datetime, timedelta as t
-from functions import parsing
-from pymongo import MongoClient
-
-client = MongoClient('mongodb://test:test@localhost', 27017)
-db = client.dbtripin
+from . import parsing
 
 PLACE_TIME_INDEX_0 = t(hours=2)
 PLACE_TIME_INDEX_1 = t(hours=1)
@@ -72,11 +68,14 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
                 move_time = dists[current_point][next_point]
 
                 # 시간 업데이트
+                start_time = current_time
                 current_time += t(minutes=move_time)
-                print(current_time, ':', places[current_point], '->', places[next_point])
+                print(current_time, ':', places[current_point], ' -> ', places[next_point])
                 temp_place = {
-                    'time': current_time,
-                    'doing': places[current_point] + '->' + places[next_point]
+                    'start_at': start_time,
+                    'end_at': current_time,
+                    'doing': places[current_point] + ' -> ' + places[next_point],
+                    'tripcoursetype': '이동'
                 }
                 total_route.append(temp_place)
 
@@ -86,11 +85,14 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
                 duration = parsing.duration_minute(index, current_info['word'], 0, places[next_point], places_info)
 
                 # 시간 업데이트
+                start_time = current_time
                 current_time += t(minutes=duration)
-                print(current_time, ':', current_info['name'], '->', places[next_point])
+                print(current_time, ':', current_info['name'], ' -> ', places[next_point])
                 temp_place = {
-                    'time': current_time,
-                    'doing': current_info['name'] + '->' + places[next_point]
+                    'start_at': start_time,
+                    'end_at': current_time,
+                    'doing': current_info['name'] + ' -> ' + places[next_point],
+                    'tripcoursetype': '이동'
                 }
                 total_route.append(temp_place)
 
@@ -110,11 +112,14 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
                 next_point = route[next_index]
 
                 # 관광 시간 업데이트
+                start_time = current_time
                 current_time += PLACE_TIME_INDEX_0
-                print(current_time, ':', places[current_point], '관광')
+                print(current_time, ':', places[current_point], '- 관광')
                 temp_place = {
-                    'time': current_time,
-                    'doing': places[current_point] + '관광'
+                    'start_at': start_time,
+                    'end_at': current_time,
+                    'doing': places[current_point] + '- 관광',
+                    'tripcoursetype': '관광'
                 }
                 total_route.append(temp_place)
 
@@ -133,11 +138,14 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
                 duration = parsing.duration_minute(0, places[current_point], index, add_place['word'], places_info)
 
                 # 시간 업데이트
+                start_time = current_time
                 current_time += t(minutes=duration)
-                print(current_time, ':', places[current_point], '->', add_place['name'])
+                print(current_time, ':', places[current_point], ' -> ', add_place['name'])
                 temp_place = {
-                    'time': current_time,
-                    'doing': places[current_point] + '->' + add_place['name']
+                    'start_at': start_time,
+                    'end_at': current_time,
+                    'doing': places[current_point] + ' -> ' + add_place['name'],
+                    'tripcoursetype': '이동'
                 }
                 total_route.append(temp_place)
 
@@ -152,11 +160,14 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
                                                    add_place['word'], places_info)
 
                 # 시간 업데이트
+                start_time = current_time
                 current_time += t(minutes=duration)
-                print(current_time, ':', current_info['name'], '->', add_place['name'])
+                print(current_time, ':', current_info['name'], ' -> ', add_place['name'])
                 temp_place = {
-                    'time': current_time,
-                    'doing': current_info['name'] + '->' + add_place['name']
+                    'start_at': start_time,
+                    'end_at': current_time,
+                    'doing': current_info['name'] + ' -> ' + add_place['name'],
+                    'tripcoursetype': '이동'
                 }
                 total_route.append(temp_place)
 
@@ -168,11 +179,14 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
 
             # 소요 시간 업데이트
             if index == 1:
+                start_time = current_time
                 current_time += PLACE_TIME_INDEX_1
                 print(current_time, ': 식사 시간')
                 temp_place = {
-                    'time': current_time,
-                    'doing': '식사 시간'
+                    'start_at': start_time,
+                    'end_at': current_time,
+                    'doing': add_place['name'] + '- 식사 시간',
+                    'tripcoursetype': '식사'
                 }
                 total_route.append(temp_place)
 
@@ -182,15 +196,19 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
                     if dinner_bool:
                         dinner_bool = 0
             elif index == 2:
+                start_time = current_time
                 current_time += PLACE_TIME_INDEX_2
                 print(current_time, ': 카페 시간')
                 temp_place = {
-                    'time': current_time,
-                    'doing': '카페 시간'
+                    'start_at': start_time,
+                    'end_at': current_time,
+                    'doing': add_place['name'] + '- 카페 시간',
+                    'tripcoursetype': '카페'
                 }
                 total_route.append(temp_place)
                 caffe_bool = 0
             elif index == 3:
+                start_time = current_time
                 current_day += t(days=1)
                 current_time = current_day + t(hours=10)
                 lunch_time = current_day + CONST_LUNCH_TIME
@@ -200,8 +218,10 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
                 lunch_bool, dinner_bool, caffe_bool, hotel_bool = add_place_index
                 print(current_time, ': 숙소 시간')
                 temp_place = {
-                    'time': current_time,
-                    'doing': '숙소 시간'
+                    'start_at': start_time,
+                    'end_at': current_time,
+                    'doing': add_place['name'] + '- 숙소 시간',
+                    'tripcoursetype': '숙박'
                 }
                 total_route.append(temp_place)
 
@@ -210,7 +230,7 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
         real_places.append(places[i])
     print('변경된 여행 경로 :', real_places)
 
-    return total_route
+    return total_route, places_info
 
 
 
@@ -225,7 +245,7 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
 #      'word': '경복궁', 'index': 0},
 #     {'id': '13161322', 'name': '광화문', 'x': '126.9768428', 'y': '37.5760260', 'address': '서울특별시 종로구 세종로 1-57',
 #      'word': '광화문', 'index': 0}]
-#
+
 # t_start_day = datetime(2022, 4, 14, 0, 0, 0)
 # t_start_time = t_start_day + t(hours=10)
 # t_dists = [[0, 53, 75, 66],
@@ -233,8 +253,8 @@ def schedule(places, places_info, start_day, start_time, dists, route, add_place
 #            [80, 65, 0, 40],
 #            [60, 71, 43, 0]]
 # t_route = [0, 1, 2, 3, 0]
-#
+
 # add_place_index = [1, 1, 1, 1]
-#
+
 # schedule(t_places, t_places_info, t_start_day, t_start_time, t_dists, t_route, add_place_index)
 
