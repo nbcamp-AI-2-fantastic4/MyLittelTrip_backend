@@ -50,4 +50,4 @@ class TripSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TripModel
-        fields = ["id", "user", "title", "created_at", "tripcourse"]
+        fields = ["id", "user", "title", "content", "created_at", "tripcourse"]
