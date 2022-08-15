@@ -212,4 +212,3 @@ CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:5500'
                          , 'http://0.0.0.0:0']
 
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_CREDENTIALS = True
