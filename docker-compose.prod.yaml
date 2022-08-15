@@ -2,22 +2,14 @@ version: "3.8"
 
 services:
   nginx:
-    build: ./nginx
-    volumes:
-      - media_volume:/usr/src/app/media
-      - static_volume:/usr/src/app/static
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - web
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      build: ./nginx
+      volumes:
+        - media_volume:/usr/src/app/media
+        - static_volume:/usr/src/app/static
+      ports:
+        - 80:80
+      depends_on:
+        - web
   web:
     build: .
     command: gunicorn --preload MyLittleTrip_backend.wsgi:application --bind 0.0.0.0:8000
