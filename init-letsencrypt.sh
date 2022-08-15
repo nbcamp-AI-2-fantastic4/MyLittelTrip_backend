@@ -8,7 +8,7 @@ fi
 domains=(mylittletrip-4416.web.app www.mylittletrip-4416.web.app)
 rsa_key_size=4096
 data_path="./data/certbot"
-email="miic0803@gmail.com" # Adding a valid address is strongly recommended
+email="miic__@naver.com" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$data_path" ]; then
@@ -77,4 +77,4 @@ docker-compose -f docker-compose.prod.yaml run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx ..."
-docker-compose -f docker-compose.prod.yaml exec nginx nginx -s reload
+docker-compose exec nginx nginx -s reload
