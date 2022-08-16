@@ -31,14 +31,18 @@ MLT - My Little Trip (여행 일정 추천받기)
 
 ### Base 추천알고리즘 github
 
-[https://github.com/kimphysicsman/Travel_recommedation](https://github.com/kimphysicsman/Travel_recommedation)
+[Travel_recommedation](https://github.com/kimphysicsman/Travel_recommedation)
+
+### Frontend github
+[MyLittleTrip_Front](https://github.com/nbcamp-AI-2-fantastic4/MyLittelTrip_frontend_react)
+
 
 # Structure
-
+![](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F03581bcb-1dd3-4f8e-b893-6cbab68b387a%2FUntitled.png?table=block&id=6654e8f6-0943-4ab2-bb24-825c7565e789&spaceId=18a55a3f-2515-4f20-9f7f-04187576573f&width=2000&userId=f65f0c54-5dc8-4f1b-acf4-e4d6d5c93a82&cache=v2)
 
 # DB 설계
 
-![](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3ee2b0f6-8330-41cf-8f35-61edd5c91631/MyLittleTrip_(2).png)
+![](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3ee2b0f6-8330-41cf-8f35-61edd5c91631%2FMyLittleTrip_(2).png?table=block&id=6e50d2d3-c223-4917-b01d-87f7e3f7c858&spaceId=18a55a3f-2515-4f20-9f7f-04187576573f&width=2000&userId=f65f0c54-5dc8-4f1b-acf4-e4d6d5c93a82&cache=v2)
 
 # API 설계
 
