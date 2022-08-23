@@ -42,20 +42,70 @@ https://mylittletrip-4416.web.app
 > React.js  
 > Node.js
 
-### Base 추천알고리즘 github
+<br />
 
-[https://github.com/kimphysicsman/Travel_recommedation](https://github.com/kimphysicsman/Travel_recommedation)
+# 📊 ERD & Structure
 
-# Structure
+<details>
+<summary>ERD</summary>
+<div markdown="1" style="padding-left: 15px;">
+<img src="https://user-images.githubusercontent.com/68724828/186067947-f255f9a4-d92d-45cd-ab7c-419ec92943f8.png" width="800px"/>
+</div>
+</details>
 
-# DB 설계
+<br />
 
-![](<https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3ee2b0f6-8330-41cf-8f35-61edd5c91631/MyLittleTrip_(2).png>)
+<details>
+<summary>Structure</summary>
+<div markdown="1" style="padding-left: 15px;">
+<img src="https://user-images.githubusercontent.com/68724828/186079270-28793ba1-466e-421f-baf2-563b890c926f.png" />
+</div>
+</details>
 
-# API 설계
+<br />
 
-[API 문서](https://www.notion.so/f69b765f4aad4ceaa9ef935332f2d10a)
+# 🔑 핵심기능
 
-# 일정 & 진행상황
+### 1. 여행장소 검색
 
-[진행 상황](https://www.notion.so/956751e99e104674a69ea01f1f9488c9)
+> 사용자가 여행장소를 검색하면 DB에서 여행장소를 검색하고  
+> DB에 없는 장소이면 네이버지도에서 검색하여 최상단의 장소의 정보를 가져오고 DB에 저장합니다.  
+> [코드 보러가기](https://github.com/nbcamp-AI-2-fantastic4/MyLittelTrip_backend/blob/d9eba0efc4567cbaef9ec19eea76e76495190a69/recommend/functions/parsing.py#L70)
+
+### 2. 최단 여행경로 찾기 & 여행일정 만들기
+
+> 사용자가 입력한 여행장소들을 바탕으로 여행일정을 만듭니다.  
+> [코드 보러가기](https://github.com/nbcamp-AI-2-fantastic4/MyLittelTrip_backend/blob/d9eba0efc4567cbaef9ec19eea76e76495190a69/recommend/functions/schedule.py#L14)
+
+<br />
+
+# 📕 기타 자료
+
+### 1. 기획문서
+
+> [MyLittleTrip - Notion](https://www.notion.so/kimphysicsman/MLT-My-Little-Trip-716433a2fc8940d9870bd83b63570646?v=0c42e849923d4449aade69046bf597d1)
+
+### 2. 여행추천 알고리즘
+
+> [Travel_recommedation - Github](https://github.com/kimphysicsman/Travel_recommedation)
+
+### 3. 발표영상
+
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <p> 1. 중간발표 </p>
+        <a href="https://www.youtube.com/watch?v=6B0DSjvsqj0&t=1s" title="MyLittleTrip 중간발표">
+          <img align="center" src="https://user-images.githubusercontent.com/68724828/186087151-e0f0ebed-08c1-4a99-9af0-a8c48c536205.png" width="300" >
+        </a>
+      </td>
+      <td>
+        <p> 2. 최종발표 </p>
+        <a href="https://youtu.be/9eoYpRqTZUU" title="MyLittleTrip 최종발표">
+          <img align="center" src="https://user-images.githubusercontent.com/68724828/186087151-e0f0ebed-08c1-4a99-9af0-a8c48c536205.png" width="300" >
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
