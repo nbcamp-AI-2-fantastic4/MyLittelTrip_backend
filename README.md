@@ -95,13 +95,13 @@ https://mylittletrip-4416.web.app
   <tbody>
     <tr>
       <td>
-        <p> 1. 중간발표 </p>
+        <p> 1. 22.08.05 발표 </p>
         <a href="https://www.youtube.com/watch?v=6B0DSjvsqj0&t=1s" title="MyLittleTrip 중간발표">
           <img align="center" src="https://user-images.githubusercontent.com/68724828/186087151-e0f0ebed-08c1-4a99-9af0-a8c48c536205.png" width="300" >
         </a>
       </td>
       <td>
-        <p> 2. 최종발표 </p>
+        <p> 2. 22.08.16 발표 </p>
         <a href="https://youtu.be/9eoYpRqTZUU" title="MyLittleTrip 최종발표">
           <img align="center" src="https://user-images.githubusercontent.com/68724828/186087151-e0f0ebed-08c1-4a99-9af0-a8c48c536205.png" width="300" >
         </a>
